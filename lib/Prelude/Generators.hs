@@ -1,3 +1,25 @@
+-- | Generators for "Prelude" types.
+--
+-- This module also contains function generators, like 'function1' and
+-- 'function2'.  These generate random functions.  To use these, get a
+-- coarbitrary function from one of the modules whose name ends in
+-- @Coarbitrary@ or by using the QuickCheck 'coarbitrary' function,
+-- along with using a generator for the function's result type.  For
+-- example:
+--
+-- @
+--    module MyModule where
+--
+--    import Test.QuickCheck
+--    import qualified Prelude.Generators as G
+--    import qualified Data.Text.Coarbitrary as C
+--    import qualified Data.Text.Generators as G
+--
+--    genTextToMaybeText :: Gen (Text -> Maybe Text)
+--    genTextToMaybeText = function1 C.text (G.maybe (G.text arbitrary))
+-- @
+
+
 module Prelude.Generators where
 
 import Test.QuickCheck
