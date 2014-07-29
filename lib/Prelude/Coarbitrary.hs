@@ -18,3 +18,13 @@ either
 either fa fb ei = case ei of
   Left a -> varInt 0 . fa a
   Right b -> varInt 1 . fb b
+
+list
+  :: (a -> Gen b -> Gen b)
+  -> [a]
+  -> Gen b
+  -> Gen b
+list f xs = case xs of
+  [] -> varInt 0
+  a:as -> varInt 1 . f a . list f as
+
