@@ -7,3 +7,8 @@ last :: (a -> Gen b -> Gen b) -> O.Last a -> Gen b -> Gen b
 last f (O.Last m) = case m of
   Nothing -> variant (0 :: Int)
   Just a -> variant (1 :: Int) . f a
+
+first :: (a -> Gen b -> Gen b) -> O.First a -> Gen b -> Gen b
+first f (O.First m) = case m of
+  Nothing -> variant (0 :: Int)
+  Just a -> variant (1 :: Int) . f a

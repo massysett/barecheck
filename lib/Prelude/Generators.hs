@@ -3,6 +3,7 @@ module Prelude.Generators where
 import Test.QuickCheck
 import Prelude hiding (maybe, either)
 import Test.QuickCheck.Gen.Unsafe
+import Control.Monad
 
 maybe :: Gen a -> Gen (Maybe a)
 maybe g = frequency [(3, fmap Just g), (1, return Nothing)]
@@ -63,3 +64,14 @@ function5 p1 p2 p3 p4 p5 = fmap f . function1 p'
     f g = \a b c d e -> g (a, b, c, d, e)
 
 
+tuple2 :: Gen a -> Gen b -> Gen (a, b)
+tuple2 a b = liftM2 (,) a b
+
+tuple3 :: Gen a -> Gen b -> Gen c -> Gen (a, b, c)
+tuple3 a b c = liftM3 (,,) a b c
+
+tuple4 :: Gen a -> Gen b -> Gen c -> Gen d -> Gen (a, b, c, d)
+tuple4 a b c d = liftM4 (,,,) a b c d
+
+tuple5 :: Gen a -> Gen b -> Gen c -> Gen d -> Gen e -> Gen (a, b, c, d, e)
+tuple5 a b c d e = liftM5 (,,,,) a b c d e

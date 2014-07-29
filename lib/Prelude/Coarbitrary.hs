@@ -28,3 +28,41 @@ list f xs = case xs of
   [] -> varInt 0
   a:as -> varInt 1 . f a . list f as
 
+tuple2
+  :: (a -> Gen r -> Gen r)
+  -> (b -> Gen r -> Gen r)
+  -> (a, b)
+  -> Gen r
+  -> Gen r
+tuple2 fa fb (a, b) = fa a . fb b
+
+tuple3
+  :: (a -> Gen r -> Gen r)
+  -> (b -> Gen r -> Gen r)
+  -> (c -> Gen r -> Gen r)
+  -> (a, b, c)
+  -> Gen r
+  -> Gen r
+tuple3 fa fb fc (a, b, c) = fa a . fb b . fc c
+
+tuple4
+  :: (a -> Gen r -> Gen r)
+  -> (b -> Gen r -> Gen r)
+  -> (c -> Gen r -> Gen r)
+  -> (d -> Gen r -> Gen r)
+  -> (a, b, c, d)
+  -> Gen r
+  -> Gen r
+tuple4 fa fb fc fd (a, b, c, d) = fa a . fb b . fc c . fd d
+
+tuple5
+  :: (a -> Gen r -> Gen r)
+  -> (b -> Gen r -> Gen r)
+  -> (c -> Gen r -> Gen r)
+  -> (d -> Gen r -> Gen r)
+  -> (e -> Gen r -> Gen r)
+  -> (a, b, c, d, e)
+  -> Gen r
+  -> Gen r
+tuple5 fa fb fc fd fe (a, b, c, d, e) = fa a . fb b . fc c . fd d . fe e
+
