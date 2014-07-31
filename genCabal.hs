@@ -78,6 +78,9 @@ text = A.closedOpen "text" [0,11,0,0] [1,2]
 containers :: A.Package
 containers = A.closedOpen "containers" [0,4,2,1] [0,6]
 
+time :: A.Package
+time = A.closedOpen "time" [1,4] [1,5]
+
 library
   :: [String]
   -- ^ Library modules
@@ -89,6 +92,7 @@ library ms = A.Library
     , base
     , text
     , containers
+    , time
     ]
   , A.hsSourceDirs [ "lib" ]
   , A.ghcOptions [ "-Wall" ]
