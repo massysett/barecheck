@@ -73,7 +73,7 @@ base :: A.Package
 base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
 
 text :: A.Package
-text = A.closedOpen "text" [0,11,0,0] [1,2]
+text = A.closedOpen "text" [0,11,3,1] [1,2]
 
 containers :: A.Package
 containers = A.closedOpen "containers" [0,4,2,1] [0,6]
