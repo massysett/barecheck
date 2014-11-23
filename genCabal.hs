@@ -8,7 +8,7 @@ module Main where
 import qualified Cartel as A
 
 versionInts :: [Int]
-versionInts = [0,2,0,0]
+versionInts = [0,2,0,2]
 
 version :: A.Version
 version = A.Version versionInts
@@ -73,13 +73,13 @@ base :: A.Package
 base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
 
 text :: A.Package
-text = A.closedOpen "text" [0,11,3,1] [1,2]
+text = A.closedOpen "text" [0,11,3,1] [1,3]
 
 containers :: A.Package
 containers = A.closedOpen "containers" [0,4,2,1] [0,6]
 
 time :: A.Package
-time = A.closedOpen "time" [1,4] [1,5]
+time = A.closedOpen "time" [1,4] [1,6]
 
 library
   :: [String]
