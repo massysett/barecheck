@@ -23,8 +23,9 @@
 module Prelude.Generators where
 
 import Test.QuickCheck
+  ( Gen, frequency, oneof )
 import Prelude hiding (maybe, either)
-import Test.QuickCheck.Gen.Unsafe
+import Barecheck.Promote
 import Control.Monad
 
 maybe :: Gen a -> Gen (Maybe a)

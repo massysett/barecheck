@@ -1,6 +1,6 @@
 module Data.Sequence.Shrinkers where
 
-import Test.QuickCheck
+import Test.QuickCheck.Arbitrary (shrinkList)
 import Data.Sequence
 import Prelude hiding (seq)
 import Data.Foldable

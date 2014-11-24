@@ -2,7 +2,7 @@ module Data.Tree.Shrinkers where
 
 import Data.Tree
 import Prelude.Shrinkers
-import Test.QuickCheck
+import Test.QuickCheck.Arbitrary (shrinkList)
 
 tree
   :: (a -> [a])

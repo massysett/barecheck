@@ -8,7 +8,7 @@ module Main where
 import qualified Cartel as A
 
 versionInts :: [Int]
-versionInts = [0,2,0,2]
+versionInts = [0,2,0,4]
 
 version :: A.Version
 version = A.Version versionInts
@@ -67,7 +67,7 @@ repo = A.empty
   }
 
 quickcheck :: A.Package
-quickcheck = A.nextBreaking "QuickCheck" [2,7]
+quickcheck = A.closedOpen "QuickCheck" [2,6] [2,8]
 
 base :: A.Package
 base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
@@ -80,6 +80,14 @@ containers = A.closedOpen "containers" [0,4,2,1] [0,6]
 
 time :: A.Package
 time = A.closedOpen "time" [1,4] [1,6]
+
+oldQuickCheck :: A.Flag
+oldQuickCheck = A.Flag
+  { A.flName = "oldQuickCheck"
+  , A.flDescription = "Use QuickCheck 2.6"
+  , A.flDefault = False
+  , A.flManual = False
+  }
 
 library
   :: [String]
@@ -94,7 +102,13 @@ library ms = A.Library
     , containers
     , time
     ]
-  , A.hsSourceDirs [ "lib" ]
+  , A.cif (A.flag "oldQuickCheck")
+    [ A.hsSourceDirs [ "oldQuickCheck", "lib" ]
+    , A.buildDepends [ A.closedOpen "QuickCheck" [2,6] [2,7] ]
+    ]
+    [ A.hsSourceDirs [ "lib" ]
+    , A.buildDepends [ A.closedOpen "QuickCheck" [2,7] [2,8] ]
+    ]
   , A.ghcOptions [ "-Wall" ]
   , A.defaultLanguage A.Haskell2010
   ]
@@ -106,6 +120,7 @@ cabal
 cabal ms = A.empty
   { A.cProperties = properties
   , A.cRepositories = [repo]
+  , A.cFlags = [ oldQuickCheck ]
   , A.cLibrary = Just $ library ms
   }
 
