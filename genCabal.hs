@@ -8,7 +8,7 @@ module Main where
 import qualified Cartel as A
 
 versionInts :: [Int]
-versionInts = [0,2,0,4]
+versionInts = [0,2,0,6]
 
 version :: A.Version
 version = A.Version versionInts
@@ -56,6 +56,10 @@ properties = A.empty
     , "current-versions.txt"
     , "genCabal.hs"
     , "sunlight-test.hs"
+
+    -- Must specify all conditional modules for distribution
+    , "oldQuickCheck/Barecheck/Promote.hs"
+    , "lib/Barecheck/Promote.hs"
     ]
   }
 
