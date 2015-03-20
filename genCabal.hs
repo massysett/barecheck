@@ -1,34 +1,31 @@
 -- Generates the Cabal file using Cartel.
--- Written for Cartel version 0.10.0.2
+-- Written for Cartel version 0.14-series.
 -- Cartel is available at
 -- http://github.com/massysett/cartel
 
 module Main where
 
-import qualified Cartel as A
+import Cartel
 
-versionInts :: [Int]
+versionInts :: [Word]
 versionInts = [0,2,0,8]
 
-version :: A.Version
-version = A.Version versionInts
-
-properties :: A.Properties
-properties = A.empty
-  { A.prName = "barecheck"
-  , A.prVersion = version
-  , A.prCabalVersion = (1,14)
-  , A.prBuildType = A.Simple
-  , A.prLicense = A.BSD3
-  , A.prLicenseFile = "LICENSE"
-  , A.prCopyright = "Copyright 2014 Omari Norman"
-  , A.prAuthor = "Omari Norman, omari@smileystation.com"
-  , A.prMaintainer = "Omari Norman, omari@smileystation.com"
-  , A.prStability = "Experimental"
-  , A.prHomepage = "http://github.com/massysett/barecheck"
-  , A.prBugReports = "http://github.com/massysett/barecheck/issues"
-  , A.prSynopsis = "QuickCheck implementations for common types"
-  , A.prDescription =
+properties :: Properties
+properties = blank
+  { name = "barecheck"
+  , version = versionInts
+  , cabalVersion = Just (1,14)
+  , buildType = Just simple
+  , license = Just bsd3
+  , licenseFile = "LICENSE"
+  , copyright = "Copyright 2014 Omari Norman"
+  , author = "Omari Norman, omari@smileystation.com"
+  , maintainer = "Omari Norman, omari@smileystation.com"
+  , stability = "Experimental"
+  , homepage = "http://github.com/massysett/barecheck"
+  , bugReports = "http://github.com/massysett/barecheck/issues"
+  , synopsis = "QuickCheck implementations for common types"
+  , description =
     [ "Provides QuickCheck implementations for common types distributed"
     , "with GHC and in the Haskell Platform.  The implementations"
     , "are NOT provided through the QuickCheck Arbitrary and"
@@ -47,68 +44,47 @@ properties = A.empty
     , "modules provided in this package and with other standard"
     , "modules, so keep this in mind when you do your imports."
     ]
-  , A.prCategory = "Testing"
-  , A.prTestedWith =
-    let ghc ints = (A.GHC, A.eq ints)
-    in map ghc [[7,6,3], [7,8,3]]
-  , A.prExtraSourceFiles =
-    [ "minimum-versions.txt"
-    , "current-versions.txt"
-    , "genCabal.hs"
-    , "sunlight-test.hs"
+  , category = "Testing"
+  , testedWith =
+    let mkGhc ints = (ghc, eq ints)
+    in map mkGhc [[7,6,3], [7,8,3]]
+  , extraSourceFiles =
+    [ "genCabal.hs"
     ]
   }
 
-repo :: A.Repository
-repo = A.empty
-  { A.repoVcs = A.Git
-  , A.repoKind = A.Head
-  , A.repoLocation = "http://github.com/massysett/barecheck.git"
-  }
+quickcheck :: Package
+quickcheck = closedOpen "QuickCheck" [2,7] [2,9]
 
-quickcheck :: A.Package
-quickcheck = A.closedOpen "QuickCheck" [2,7] [2,9]
+base :: Package
+base = closedOpen "base" [4,5,0,0] [4,8,0,0]
 
-base :: A.Package
-base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
+text :: Package
+text = closedOpen "text" [0,11,3,1] [1,3]
 
-text :: A.Package
-text = A.closedOpen "text" [0,11,3,1] [1,3]
+containers :: Package
+containers = closedOpen "containers" [0,4,2,1] [0,6]
 
-containers :: A.Package
-containers = A.closedOpen "containers" [0,4,2,1] [0,6]
-
-time :: A.Package
-time = A.closedOpen "time" [1,4] [1,6]
-
-library
-  :: [String]
-  -- ^ Library modules
-  -> A.Library
-library ms = A.Library
-  [ A.LibExposedModules ms
-  , A.buildDepends
-    [ quickcheck
-    , base
-    , text
-    , containers
-    , time
-    ]
-  , A.ghcOptions [ "-Wall" ]
-  , A.defaultLanguage A.Haskell2010
-  ]
-
-cabal
-  :: [String]
-  -- ^ Library modules
-  -> A.Cabal
-cabal ms = A.empty
-  { A.cProperties = properties
-  , A.cRepositories = [repo]
-  , A.cLibrary = Just $ library ms
-  }
+time :: Package
+time = closedOpen "time" [1,4] [1,6]
 
 main :: IO ()
-main = do
-  ms <- A.modules "lib"
-  A.render "genCabal.hs" $ cabal ms
+main = defaultMain $ do
+  libMods <- modules "lib"
+  return
+    ( properties
+    , [ exposedModules libMods
+      , buildDepends
+          [ quickcheck
+          , base
+          , text
+          , containers
+          , time
+          ]
+      , ghcOptions ["-Wall"]
+      , haskell2010
+      , hsSourceDirs ["lib"]
+      ]
+    , [ githubHead "massysett" "barecheck"
+      ]
+    )

@@ -1,2 +1,4 @@
 dist/
 barecheck.cabal
+.cabal-sandbox/
+cabal.sandbox.config
