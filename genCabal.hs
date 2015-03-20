@@ -50,16 +50,12 @@ properties = A.empty
   , A.prCategory = "Testing"
   , A.prTestedWith =
     let ghc ints = (A.GHC, A.eq ints)
-    in map ghc [[7,4,1], [7,6,3], [7,8,3]]
+    in map ghc [[7,6,3], [7,8,3]]
   , A.prExtraSourceFiles =
     [ "minimum-versions.txt"
     , "current-versions.txt"
     , "genCabal.hs"
     , "sunlight-test.hs"
-
-    -- Must specify all conditional modules for distribution
-    , "oldQuickCheck/Barecheck/Promote.hs"
-    , "lib/Barecheck/Promote.hs"
     ]
   }
 
@@ -71,7 +67,7 @@ repo = A.empty
   }
 
 quickcheck :: A.Package
-quickcheck = A.closedOpen "QuickCheck" [2,6] [2,9]
+quickcheck = A.closedOpen "QuickCheck" [2,7] [2,9]
 
 base :: A.Package
 base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
@@ -84,14 +80,6 @@ containers = A.closedOpen "containers" [0,4,2,1] [0,6]
 
 time :: A.Package
 time = A.closedOpen "time" [1,4] [1,6]
-
-oldQuickCheck :: A.Flag
-oldQuickCheck = A.Flag
-  { A.flName = "oldQuickCheck"
-  , A.flDescription = "Use QuickCheck 2.6"
-  , A.flDefault = False
-  , A.flManual = False
-  }
 
 library
   :: [String]
@@ -106,13 +94,6 @@ library ms = A.Library
     , containers
     , time
     ]
-  , A.cif (A.flag "oldQuickCheck")
-    [ A.hsSourceDirs [ "oldQuickCheck", "lib" ]
-    , A.buildDepends [ A.closedOpen "QuickCheck" [2,6] [2,7] ]
-    ]
-    [ A.hsSourceDirs [ "lib" ]
-    , A.buildDepends [ A.closedOpen "QuickCheck" [2,7] [2,8] ]
-    ]
   , A.ghcOptions [ "-Wall" ]
   , A.defaultLanguage A.Haskell2010
   ]
@@ -124,7 +105,6 @@ cabal
 cabal ms = A.empty
   { A.cProperties = properties
   , A.cRepositories = [repo]
-  , A.cFlags = [ oldQuickCheck ]
   , A.cLibrary = Just $ library ms
   }
 
