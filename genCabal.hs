@@ -8,7 +8,7 @@ module Main where
 import qualified Cartel as A
 
 versionInts :: [Int]
-versionInts = [0,2,0,6]
+versionInts = [0,2,0,8]
 
 version :: A.Version
 version = A.Version versionInts
@@ -71,7 +71,7 @@ repo = A.empty
   }
 
 quickcheck :: A.Package
-quickcheck = A.closedOpen "QuickCheck" [2,6] [2,8]
+quickcheck = A.closedOpen "QuickCheck" [2,6] [2,9]
 
 base :: A.Package
 base = A.closedOpen "base" [4,5,0,0] [4,8,0,0]
